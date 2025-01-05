@@ -7,7 +7,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o main ./cmd/shortener/main.go
+RUN go build -o main ./cmd/bot/main.go
 
 # Runtime stage
 FROM alpine:latest
