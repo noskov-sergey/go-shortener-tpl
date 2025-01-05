@@ -13,12 +13,15 @@ type service interface {
 type Implementation struct {
 	service service
 	chi.Router
+
+	baseURL string
 }
 
-func New(service service) *Implementation {
+func New(service service, baseURL string) *Implementation {
 	i := &Implementation{
 		service: service,
 		Router:  chi.NewRouter(),
+		baseURL: baseURL,
 	}
 	i.Post("/", i.createHandler)
 	i.Get("/{id}", i.getByIDHandler)
