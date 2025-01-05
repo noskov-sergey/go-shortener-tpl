@@ -1,0 +1,71 @@
+name: Deploy
+
+on:
+  pull_request:
+    types:
+      - "closed"
+    branches:
+      - "main"
+
+env:
+  REGISTRY: "synoskov"
+  IMAGE_NAME: "shortener"
+  CONTAINER_NAME: "shortener-container"
+
+jobs:
+  build_and_push_to_docker_hub:
+    if: github.event.pull_request.merged == true
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          file: ./prod.Dockerfile
+          push: true
+          tags: synoskov/shortener:latest
+
+  deploy-image:
+    runs-on: ubuntu-latest
+    needs: build_and_push_to_docker_hub
+    steps:
+      - name: Deploy to AEZA Cloud via SSH action
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          envs: IMAGE_NAME, REGISTRY, GITHUB_SHA, CONTAINER_NAME
+          script: |
+            #Change working derictory
+            cd shortener/
+            
+            #Stop running container
+            sudo docker compose stop shortener
+            
+            #Remove container
+            sudo docker compose rm shortener
+            
+            # Pull new registry container
+            docker pull $REGISTRY/$IMAGE_NAME:latest
+            
+            #Create env
+            touch .env
+            
+            #Add value to env
+            echo PATH=${{ secrets.PATH }} >> .env
+            
+            # Run a new container from a new image
+            sudo docker compose up -d --build shortener
