@@ -24,5 +24,5 @@ func (i *Implementation) Create(res http.ResponseWriter, req *http.Request) {
 	}
 
 	res.WriteHeader(http.StatusCreated)
-	res.Write([]byte("http://localhost:8080/" + s))
+	res.Write([]byte("http://" + req.Host + "/" + s))
 }
