@@ -2,6 +2,7 @@ package shortener
 
 import "net/http"
 
+//go:generate mockgen -source api.go -destination mocks/mocks.go -typed true service
 type service interface {
 	Create(string) (string, error)
 	GetByID(string) (string, error)
