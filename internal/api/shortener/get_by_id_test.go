@@ -38,7 +38,7 @@ func TestImplementation_GetByID_Error(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
 
-	td.GetByID(w, r)
+	td.getByIDHandler(w, r)
 
 	assert.Equal(t, http.StatusBadRequest, w.Code, "Код ответа не совпадает с ожидаемым")
 }

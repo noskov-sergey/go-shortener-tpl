@@ -1,6 +1,8 @@
 package shortener
 
-import "net/http"
+import (
+	"github.com/go-chi/chi/v5"
+)
 
 //go:generate mockgen -source api.go -destination mocks/mocks.go -typed true service
 type service interface {
@@ -10,16 +12,16 @@ type service interface {
 
 type Implementation struct {
 	service service
-	http.ServeMux
+	chi.Router
 }
 
 func New(service service) *Implementation {
 	i := &Implementation{
-		service:  service,
-		ServeMux: *http.NewServeMux(),
+		service: service,
+		Router:  chi.NewRouter(),
 	}
-	i.HandleFunc("/", i.Create)
-	i.HandleFunc("/{id}", i.GetByID)
+	i.Post("/", i.createHandler)
+	i.Get("/{id}", i.getByIDHandler)
 
 	return i
 }

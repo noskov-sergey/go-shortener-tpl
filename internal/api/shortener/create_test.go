@@ -24,7 +24,7 @@ func TestCreate_Success(t *testing.T) {
 		Create(gomock.Any()).
 		Return("AAAbbbCC", nil)
 
-	td.Create(w, r)
+	td.createHandler(w, r)
 
 	assert.Equal(t, http.StatusCreated, w.Code, "Код ответа не совпадает с ожидаемым")
 }
@@ -38,7 +38,7 @@ func TestImplementation_Create_Error(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
 
-	td.Create(w, r)
+	td.createHandler(w, r)
 
 	assert.Equal(t, http.StatusBadRequest, w.Code, "Код ответа не совпадает с ожидаемым")
 }
