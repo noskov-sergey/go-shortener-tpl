@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func (i *Implementation) GetByID(res http.ResponseWriter, req *http.Request) {
+func (i *Implementation) getByIDHandler(res http.ResponseWriter, req *http.Request) {
 	if req.Method != http.MethodGet {
 		res.WriteHeader(http.StatusBadRequest)
 		return
