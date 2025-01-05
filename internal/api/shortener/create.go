@@ -19,5 +19,5 @@ func (i *Implementation) createHandler(res http.ResponseWriter, req *http.Reques
 	}
 
 	res.WriteHeader(http.StatusCreated)
-	res.Write([]byte(i.baseUrl + s))
+	res.Write([]byte(i.baseURL + s))
 }
