@@ -18,7 +18,7 @@ func main() {
 		fmt.Println("Error initializing logger")
 	}
 
-	cfg := config.New().ParseFlag()
+	cfg := config.New().Parse()
 
 	rep := memory.New()
 	service := shortener.New(rep)
