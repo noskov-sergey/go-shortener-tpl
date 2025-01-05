@@ -2,15 +2,12 @@ package shortener
 
 import (
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
 )
 
 func (i *Implementation) getByIDHandler(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodGet {
-		res.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	shortURL := req.PathValue("id")
+	shortURL := chi.URLParam(req, "id")
 	if shortURL == "" {
 		res.WriteHeader(http.StatusBadRequest)
 		return
