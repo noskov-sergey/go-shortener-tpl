@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (i *Implementation) Create(res http.ResponseWriter, req *http.Request) {
+func (i *Implementation) createHandler(res http.ResponseWriter, req *http.Request) {
 	if req.Method != http.MethodPost {
 		res.WriteHeader(http.StatusBadRequest)
 		return
