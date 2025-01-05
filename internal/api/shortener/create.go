@@ -6,11 +6,6 @@ import (
 )
 
 func (i *Implementation) createHandler(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodPost {
-		res.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
 		res.WriteHeader(http.StatusBadRequest)
@@ -24,5 +19,5 @@ func (i *Implementation) createHandler(res http.ResponseWriter, req *http.Reques
 	}
 
 	res.WriteHeader(http.StatusCreated)
-	res.Write([]byte("http://" + req.Host + "/" + s))
+	res.Write([]byte(i.baseURL + "/" + s))
 }
