@@ -6,7 +6,7 @@ import (
 
 func (r *repository) GetByID(shortURL string) (string, error) {
 	if _, ok := r.data[shortURL]; !ok {
-		return "", errors.ErrShortUrlNotFound
+		return "", errors.ErrShortURLNotFound
 	}
 	return r.data[shortURL], nil
 }

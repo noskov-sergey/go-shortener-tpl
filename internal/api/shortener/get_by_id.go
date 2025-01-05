@@ -10,13 +10,13 @@ func (i *Implementation) GetByID(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	shortUrl := req.PathValue("id")
-	if shortUrl == "" {
+	shortURL := req.PathValue("id")
+	if shortURL == "" {
 		res.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	url, err := i.service.GetByID(shortUrl)
+	url, err := i.service.GetByID(shortURL)
 	if err != nil {
 		res.WriteHeader(http.StatusBadRequest)
 		return

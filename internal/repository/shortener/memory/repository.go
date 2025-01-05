@@ -2,7 +2,7 @@ package memory
 
 const (
 	runeLen     = 52
-	shortUrlLen = 8
+	shortURLLen = 8
 )
 
 type repository struct {
