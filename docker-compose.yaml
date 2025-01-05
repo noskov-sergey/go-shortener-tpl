@@ -5,4 +5,4 @@ services:
     image: synoskov/shortener
     restart: on-failure
     ports:
-      - "8010:8080"
+      - "8011:8080"
