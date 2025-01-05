@@ -14,8 +14,8 @@ func New() *config {
 }
 
 func (c *config) ParseFlag() *config {
-	flag.StringVar(&c.URL, "url", ":8080", "addres and port to run server")
-	flag.StringVar(&c.BaseURL, "base", "http://localhost:8080/", "base url to inform user")
+	flag.StringVar(&c.URL, "a", ":8080", "addres and port to run server")
+	flag.StringVar(&c.BaseURL, "b", "http://localhost:8080/", "base url to inform user")
 	flag.Parse()
 
 	return c
