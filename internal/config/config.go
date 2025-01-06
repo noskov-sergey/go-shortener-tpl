@@ -28,11 +28,11 @@ func (c *config) Parse() *config {
 	flag.Parse()
 
 	godotenv.Load(*cfg)
-	if os.Getenv(envServerAdress) != "" {
-		c.URL = os.Getenv(envServerAdress)
+	if URL := os.Getenv(envServerAdress); URL != "" {
+		c.URL = URL
 	}
-	if os.Getenv(envBaseURL) != "" {
-		c.BaseURL = os.Getenv(envBaseURL)
+	if BaseURL := os.Getenv(envBaseURL); BaseURL != "" {
+		c.BaseURL = BaseURL
 	}
 
 	return c

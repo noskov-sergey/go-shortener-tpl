@@ -12,6 +12,11 @@ func (i *Implementation) createHandler(res http.ResponseWriter, req *http.Reques
 		return
 	}
 
+	if string(body) == "" {
+		res.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	s, err := i.service.Create(string(body))
 	if err != nil {
 		res.WriteHeader(http.StatusBadRequest)
@@ -19,5 +24,5 @@ func (i *Implementation) createHandler(res http.ResponseWriter, req *http.Reques
 	}
 
 	res.WriteHeader(http.StatusCreated)
-	res.Write([]byte(i.baseURL + "/" + s))
+	res.Write([]byte(i.cfg.baseURL + "/" + s))
 }
