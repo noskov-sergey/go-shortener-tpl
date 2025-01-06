@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
-
-	"go.uber.org/zap"
+	"os"
 
 	shortenerApi "github.ru/noskov-sergey/go-shortener-tpl/internal/api/shortener"
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/config"
@@ -13,11 +13,7 @@ import (
 )
 
 func main() {
-	log, err := zap.NewProduction()
-	if err != nil {
-		fmt.Println("Error initializing logger")
-	}
-
+	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	cfg := config.New().Parse()
 
 	rep := memory.New()
@@ -25,8 +21,9 @@ func main() {
 	imp := shortenerApi.New(service, cfg.BaseURL)
 
 	log.Info(fmt.Sprintf("starting server on %s", cfg.URL))
-	err = http.ListenAndServe(cfg.URL, imp)
+	err := http.ListenAndServe(cfg.URL, imp)
 	if err != nil {
-		log.Fatal("error starting http server", zap.Error(err))
+		log.Warn("error starting http server", err)
+		panic(err)
 	}
 }
