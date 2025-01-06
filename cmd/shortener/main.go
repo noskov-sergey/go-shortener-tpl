@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"os"
 
-	"go.uber.org/zap"
-
 	shortenerApi "github.ru/noskov-sergey/go-shortener-tpl/internal/api/shortener"
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/config"
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/repository/shortener/memory"
@@ -22,10 +20,10 @@ func main() {
 	service := shortener.New(rep)
 	imp := shortenerApi.New(service, cfg.BaseURL)
 
-	slog.Info(fmt.Sprintf("starting server on %s", cfg.URL))
+	log.Info(fmt.Sprintf("starting server on %s", cfg.URL))
 	err := http.ListenAndServe(cfg.URL, imp)
 	if err != nil {
-		log.Warn("error starting http server", zap.Error(err))
+		log.Warn("error starting http server", err)
 		panic(err)
 	}
 }

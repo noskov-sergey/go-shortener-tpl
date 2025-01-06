@@ -33,5 +33,6 @@ func (i *Implementation) shortenHandler(res http.ResponseWriter, req *http.Reque
 	}
 
 	res.WriteHeader(http.StatusCreated)
+	res.Header().Set("Content-Type", "application/json")
 	res.Write(got)
 }
