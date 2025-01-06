@@ -1,19 +1,15 @@
 package middleware
 
 import (
-	"fmt"
+	"log/slog"
 	"net/http"
+	"os"
 	"time"
-
-	"go.uber.org/zap"
 )
 
 func WithLogging(h http.Handler) http.Handler {
 	logFn := func(w http.ResponseWriter, r *http.Request) {
-		log, err := zap.NewProduction()
-		if err != nil {
-			fmt.Println("Error initializing logger")
-		}
+		log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 		start := time.Now()
 
@@ -31,11 +27,11 @@ func WithLogging(h http.Handler) http.Handler {
 
 		log.Info(
 			"middleware logger",
-			zap.String("uri", r.RequestURI),
-			zap.String("method", r.Method),
-			zap.Int("status", responseData.status),
-			zap.Duration("duration", duration),
-			zap.Int("size", responseData.size),
+			slog.String("uri", r.RequestURI),
+			slog.String("method", r.Method),
+			slog.Int("status", responseData.status),
+			slog.Duration("duration", duration),
+			slog.Int("size", responseData.size),
 		)
 	}
 	return http.HandlerFunc(logFn)

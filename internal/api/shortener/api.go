@@ -32,6 +32,15 @@ func New(service service, baseURL string) *Implementation {
 		},
 	}
 	i.Use(middleware.WithLogging)
+	i.Route("/", func(r chi.Router) {
+		i.Post("/", i.createHandler)
+		i.Get("/{id}", i.getByIDHandler)
+		i.Route("/api", func(r chi.Router) {
+			r.Route("/shorten", func(r chi.Router) {
+				r.Post("/", i.shortenHandler)
+			})
+		})
+	})
 	i.Post("/", i.createHandler)
 	i.Get("/{id}", i.getByIDHandler)
 
