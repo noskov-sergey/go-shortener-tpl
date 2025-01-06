@@ -18,5 +18,9 @@ tests6:
 	GOARCH=amd64 GOOS=windows go build -o cmd/shortener/shortener.exe cmd/shortener/main.go
 	shortenertestbeta --test.v --test.run=^TestIteration6 -binary-path=shortener -source-path=.
 
+tests7:
+	GOARCH=amd64 GOOS=windows go build -o cmd/shortener/shortener.exe cmd/shortener/main.go
+	shortenertestbeta --test.v --test.run=^TestIteration7 -binary-path=shortener -source-path=.
+
 build:
 	GOARCH=amd64 GOOS=windows go build -o cmd/shortener/shortener.exe cmd/shortener/main.go
