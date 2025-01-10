@@ -77,7 +77,10 @@ jobs:
             #Remove container
             sudo docker compose rm shortener
             
-            #Create env
+            #delete env file
+            rm .env
+            
+            #Create new env
             touch .env
             
             #Add value to env
