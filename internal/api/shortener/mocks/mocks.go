@@ -12,6 +12,7 @@ package mock_shortener
 import (
 	reflect "reflect"
 
+	model "github.ru/noskov-sergey/go-shortener-tpl/internal/model"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -73,6 +74,45 @@ func (c *MockserviceCreateCall) Do(f func(string) (string, error)) *MockserviceC
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockserviceCreateCall) DoAndReturn(f func(string) (string, error)) *MockserviceCreateCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// CreateBatch mocks base method.
+func (m *Mockservice) CreateBatch(arg0 []model.Batch) ([]model.Batch, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateBatch", arg0)
+	ret0, _ := ret[0].([]model.Batch)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateBatch indicates an expected call of CreateBatch.
+func (mr *MockserviceMockRecorder) CreateBatch(arg0 any) *MockserviceCreateBatchCall {
+	mr.mock.ctrl.T.Helper()
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateBatch", reflect.TypeOf((*Mockservice)(nil).CreateBatch), arg0)
+	return &MockserviceCreateBatchCall{Call: call}
+}
+
+// MockserviceCreateBatchCall wrap *gomock.Call
+type MockserviceCreateBatchCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockserviceCreateBatchCall) Return(arg0 []model.Batch, arg1 error) *MockserviceCreateBatchCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockserviceCreateBatchCall) Do(f func([]model.Batch) ([]model.Batch, error)) *MockserviceCreateBatchCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockserviceCreateBatchCall) DoAndReturn(f func([]model.Batch) ([]model.Batch, error)) *MockserviceCreateBatchCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

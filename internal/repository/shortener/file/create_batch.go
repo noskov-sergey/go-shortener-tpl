@@ -16,7 +16,7 @@ func (r *repository) CreateBatchTx(data []model.Batch) error {
 		for _, d := range data {
 			err := r.writeData(d.ShortURL, d.OriginalURL)
 			if err != nil {
-				fmt.Errorf("error with write to file: %w", err)
+				return fmt.Errorf("error with write to file: %w", err)
 			}
 		}
 	}
