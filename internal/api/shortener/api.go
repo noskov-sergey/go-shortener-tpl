@@ -1,6 +1,7 @@
 package shortener
 
 import (
+	"database/sql"
 	"log/slog"
 
 	"github.com/go-chi/chi/v5"
@@ -22,15 +23,18 @@ type Implementation struct {
 	service service
 	chi.Router
 
+	DB *sql.DB
+
 	log *slog.Logger
 
 	cfg config
 }
 
-func New(service service, baseURL string, log *slog.Logger) *Implementation {
+func New(service service, baseURL string, DB *sql.DB, log *slog.Logger) *Implementation {
 	i := &Implementation{
 		service: service,
 		Router:  chi.NewRouter(),
+		DB:      DB,
 		log:     log,
 		cfg: config{
 			baseURL: baseURL,
@@ -41,6 +45,7 @@ func New(service service, baseURL string, log *slog.Logger) *Implementation {
 	i.Route("/", func(r chi.Router) {
 		i.Post("/", i.createHandler)
 		i.Get("/{id}", i.getByIDHandler)
+		i.Get("/ping", i.pingHandler)
 		i.Route("/api", func(r chi.Router) {
 			r.Route("/shorten", func(r chi.Router) {
 				r.Post("/", i.shortenHandler)
