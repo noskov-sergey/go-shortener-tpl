@@ -32,6 +32,7 @@ func New() *config {
 }
 
 func (c *config) Parse() *config {
+	c.Save = repoFileValue
 	c.File = envFileDefault
 	cfg := flag.String("c", ".env", "config file path")
 	flag.StringVar(&c.URL, "a", ":8080", "address and port to run server")
@@ -40,7 +41,6 @@ func (c *config) Parse() *config {
 	flag.Func("f", "base filepath to backup data", func(flagValue string) error {
 		if flagValue != "" {
 			c.File = flagValue
-			c.Save = repoFileValue
 		}
 		return nil
 	})
