@@ -22,5 +22,9 @@ tests7:
 	GOARCH=amd64 GOOS=windows go build -o cmd/shortener/shortener.exe cmd/shortener/main.go
 	shortenertestbeta --test.v --test.run=^TestIteration7 -binary-path=shortener -source-path=.
 
+tests9:
+	GOARCH=amd64 GOOS=windows go build -o cmd/shortener/shortener.exe cmd/shortener/main.go
+	shortenertestbeta --test.v --test.run=^TestIteration9 -binary-path=shortener -source-path=. -file-storage-path=lolik.json
+
 build:
 	GOARCH=amd64 GOOS=windows go build -o cmd/shortener/shortener.exe cmd/shortener/main.go

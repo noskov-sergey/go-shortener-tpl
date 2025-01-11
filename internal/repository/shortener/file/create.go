@@ -33,7 +33,7 @@ func (r *repository) Create(URL string) (string, error) {
 
 func (r *repository) writeData(str []rune, URL string) error {
 	line := Shorten{
-		Uuid:        r.uuid,
+		UUID:        r.uuid,
 		ShortURL:    string(str),
 		OriginalURL: URL,
 	}
