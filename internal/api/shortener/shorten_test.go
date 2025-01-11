@@ -2,6 +2,7 @@ package shortener
 
 import (
 	"bytes"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -34,7 +35,7 @@ func TestImplementationShortenSuccess(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			api := mock_shortener.NewMockservice(ctrl)
-			td := New(api, "BaseURL")
+			td := New(api, "BaseURL", &slog.Logger{})
 
 			body := bytes.NewReader(test.want.body)
 			r := httptest.NewRequest(http.MethodPost, "/api/shorten", body)
@@ -80,7 +81,7 @@ func TestImplementationShortenError(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			api := mock_shortener.NewMockservice(ctrl)
-			td := New(api, "BaseURL")
+			td := New(api, "BaseURL", &slog.Logger{})
 
 			body := bytes.NewReader(test.want.body)
 			r := httptest.NewRequest(http.MethodPost, "/api/shorten", body)
