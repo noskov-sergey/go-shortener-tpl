@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -33,9 +34,10 @@ func TestImplementationShortenSuccess(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
+			log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 			ctrl := gomock.NewController(t)
 			api := mock_shortener.NewMockservice(ctrl)
-			td := New(api, "BaseURL", &slog.Logger{})
+			td := New(api, "BaseURL", log)
 
 			body := bytes.NewReader(test.want.body)
 			r := httptest.NewRequest(http.MethodPost, "/api/shorten", body)
@@ -79,9 +81,10 @@ func TestImplementationShortenError(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
+			log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 			ctrl := gomock.NewController(t)
 			api := mock_shortener.NewMockservice(ctrl)
-			td := New(api, "BaseURL", &slog.Logger{})
+			td := New(api, "BaseURL", log)
 
 			body := bytes.NewReader(test.want.body)
 			r := httptest.NewRequest(http.MethodPost, "/api/shorten", body)
