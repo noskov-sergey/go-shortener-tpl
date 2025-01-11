@@ -1,6 +1,8 @@
 package shortener
 
 import (
+	"log/slog"
+
 	"github.com/go-chi/chi/v5"
 
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/middleware"
@@ -20,13 +22,16 @@ type Implementation struct {
 	service service
 	chi.Router
 
+	log *slog.Logger
+
 	cfg config
 }
 
-func New(service service, baseURL string) *Implementation {
+func New(service service, baseURL string, log *slog.Logger) *Implementation {
 	i := &Implementation{
 		service: service,
 		Router:  chi.NewRouter(),
+		log:     log,
 		cfg: config{
 			baseURL: baseURL,
 		},
