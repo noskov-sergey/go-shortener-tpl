@@ -6,6 +6,7 @@ type Repo interface {
 	Create(model.Shortener) error
 	GetByID(string) (string, error)
 	Ping() error
+	CreateBatchTx([]model.Batch) error
 }
 
 type service struct {
