@@ -16,7 +16,7 @@ func main() {
 	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	cfg := config.New().Parse()
 
-	f, err := os.OpenFile(cfg.File, os.O_RDONLY|os.O_CREATE, 0666)
+	f, err := os.OpenFile(cfg.File, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		log.Error("error open file", slog.Any("err", err))
 		panic(err)
