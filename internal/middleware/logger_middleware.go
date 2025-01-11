@@ -8,7 +8,7 @@ import (
 )
 
 func WithLogging(h http.Handler) http.Handler {
-	logFn := func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 		start := time.Now()
@@ -33,8 +33,7 @@ func WithLogging(h http.Handler) http.Handler {
 			slog.Duration("duration", duration),
 			slog.Int("size", responseData.size),
 		)
-	}
-	return http.HandlerFunc(logFn)
+	})
 }
 
 type (
