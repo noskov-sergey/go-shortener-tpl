@@ -6,6 +6,7 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/middleware"
+	"github.ru/noskov-sergey/go-shortener-tpl/internal/model"
 )
 
 type config struct {
@@ -17,6 +18,7 @@ type service interface {
 	Create(string) (string, error)
 	GetByID(string) (string, error)
 	Ping() error
+	CreateBatch([]model.Batch) ([]model.Batch, error)
 }
 
 type Implementation struct {
@@ -46,6 +48,7 @@ func New(service service, baseURL string, log *slog.Logger) *Implementation {
 		i.Route("/api", func(r chi.Router) {
 			r.Route("/shorten", func(r chi.Router) {
 				r.Post("/", i.shortenHandler)
+				r.Post("/batch", i.createBatchHandler)
 			})
 		})
 	})
