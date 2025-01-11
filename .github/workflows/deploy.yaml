@@ -87,6 +87,11 @@ jobs:
             echo PATH=${{ secrets.PATH }} >> .env
             echo BASE_URL=${{ secrets.BASE_URL }} >> .env
             echo FILE_STORAGE_PATH=${{ secrets.FILE_STORAGE_PATH }} >> .env
+            echo PG_DATABASE_NAME=${{ secrets.PG_DATABASE_NAME }} >> .env
+            echo PG_USER=${{ secrets.PG_USER }} >> .env
+            echo PG_PASSWORD=${{ secrets.PG_PASSWORD }} >> .env
+            echo PG_PORT=${{ secrets.PG_PORT }} >> .env
+            echo DATABASE_DSN=${{ secrets.DATABASE_DSN }} >> .env
             
             # Run a new container from a new image
-            sudo docker compose up -d --build shortener
+            sudo docker compose up -d

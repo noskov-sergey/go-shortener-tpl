@@ -2,6 +2,7 @@ package shortener
 
 import (
 	"bytes"
+	"database/sql"
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
@@ -34,10 +35,11 @@ func TestImplementationShortenSuccess(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
+			db, _ := sql.Open("postgres", "cfg.DSN")
 			log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 			ctrl := gomock.NewController(t)
 			api := mock_shortener.NewMockservice(ctrl)
-			td := New(api, "BaseURL", log)
+			td := New(api, "BaseURL", db, log)
 
 			body := bytes.NewReader(test.want.body)
 			r := httptest.NewRequest(http.MethodPost, "/api/shorten", body)
@@ -81,10 +83,11 @@ func TestImplementationShortenError(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
+			db, _ := sql.Open("postgres", "cfg.DSN")
 			log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 			ctrl := gomock.NewController(t)
 			api := mock_shortener.NewMockservice(ctrl)
-			td := New(api, "BaseURL", log)
+			td := New(api, "BaseURL", db, log)
 
 			body := bytes.NewReader(test.want.body)
 			r := httptest.NewRequest(http.MethodPost, "/api/shorten", body)
