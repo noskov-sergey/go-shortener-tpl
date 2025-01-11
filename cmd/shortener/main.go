@@ -28,7 +28,7 @@ func main() {
 		panic(err)
 	}
 	service := shortener.New(rep)
-	imp := shortenerApi.New(service, cfg.BaseURL)
+	imp := shortenerApi.New(service, cfg.BaseURL, log)
 
 	log.Info(fmt.Sprintf("starting server on %s", cfg.URL))
 	err = http.ListenAndServe(cfg.URL, imp)
