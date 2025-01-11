@@ -8,15 +8,18 @@ import (
 )
 
 func (r *Repository) Create(data model.Shortener) error {
-	row := r.db.QueryRow(`
+	got, err := r.db.Exec(`
 		INSERT INTO shortener (original_url,short_url,created_at)
 		VALUES ($1, $2, $3) RETURNING id`,
 		data.URL, data.ShortURL, time.Now())
 
-	var id int
-	err := row.Scan(&id)
 	if err != nil {
-		return fmt.Errorf("query row: %w", err)
+		return fmt.Errorf("exec: %w", err)
+	}
+
+	row, _ := got.RowsAffected()
+	if row == 0 {
+		return fmt.Errorf("no row affected: %w", err)
 	}
 
 	return nil

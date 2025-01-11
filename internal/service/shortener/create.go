@@ -13,17 +13,9 @@ const (
 )
 
 func (s *service) Create(url string) (string, error) {
-	ru := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
-	str := make([]rune, shortURLLen)
-
-	for i := range shortURLLen {
-		str[i] = ru[rand.Intn(runeLen)]
-	}
-
 	data := model.Shortener{
+		ShortURL: generateShortURL(),
 		URL:      url,
-		ShortURL: string(str),
 	}
 
 	err := s.repo.Create(data)
@@ -32,5 +24,17 @@ func (s *service) Create(url string) (string, error) {
 		return "", fmt.Errorf("create: %w", err)
 	}
 
-	return string(str), nil
+	return data.ShortURL, nil
+}
+
+func generateShortURL() string {
+	ru := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+	str := make([]rune, shortURLLen)
+
+	for i := range shortURLLen {
+		str[i] = ru[rand.Intn(runeLen)]
+	}
+
+	return string(str)
 }
