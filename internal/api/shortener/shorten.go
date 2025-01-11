@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+
+	"github.ru/noskov-sergey/go-shortener-tpl/internal/model"
 )
 
 func (i *Implementation) shortenHandler(res http.ResponseWriter, req *http.Request) {
@@ -14,7 +16,7 @@ func (i *Implementation) shortenHandler(res http.ResponseWriter, req *http.Reque
 	}
 	defer req.Body.Close()
 
-	var data shortenRequest
+	var data model.ShortenRequest
 	err = json.Unmarshal(body, &data)
 	if err != nil {
 		res.WriteHeader(http.StatusBadRequest)
@@ -26,7 +28,7 @@ func (i *Implementation) shortenHandler(res http.ResponseWriter, req *http.Reque
 		return
 	}
 
-	got, err := json.Marshal(ToResponse(i.cfg.baseURL + "/" + s))
+	got, err := json.Marshal(model.ToResponse(i.cfg.baseURL + "/" + s))
 	if err != nil {
 		res.WriteHeader(http.StatusBadRequest)
 		return

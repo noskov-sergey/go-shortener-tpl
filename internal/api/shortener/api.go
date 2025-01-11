@@ -32,6 +32,7 @@ func New(service service, baseURL string) *Implementation {
 		},
 	}
 	i.Use(middleware.WithLogging)
+	i.Use(middleware.GzipMiddleware)
 	i.Route("/", func(r chi.Router) {
 		i.Post("/", i.createHandler)
 		i.Get("/{id}", i.getByIDHandler)
