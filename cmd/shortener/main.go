@@ -12,6 +12,7 @@ import (
 	shortenerApi "github.ru/noskov-sergey/go-shortener-tpl/internal/api/shortener"
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/config"
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/repository/shortener/file"
+	"github.ru/noskov-sergey/go-shortener-tpl/internal/repository/shortener/pgsql"
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/service/shortener"
 )
 
@@ -37,8 +38,9 @@ func main() {
 		log.Error("error make repo", slog.Any("err", err))
 		panic(err)
 	}
-	service := shortener.New(rep)
-	imp := shortenerApi.New(service, cfg.BaseURL, db, log)
+	dbRep := pgsql.NewShortenRepository(db)
+	service := shortener.New(rep, dbRep)
+	imp := shortenerApi.New(service, cfg.BaseURL, log)
 
 	log.Info(fmt.Sprintf("starting server on %s", cfg.URL))
 	err = http.ListenAndServe(cfg.URL, imp)

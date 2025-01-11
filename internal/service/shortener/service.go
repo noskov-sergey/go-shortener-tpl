@@ -5,12 +5,18 @@ type repo interface {
 	GetByID(string) (string, error)
 }
 
-type service struct {
-	repo repo
+type dbRepo interface {
+	Ping() error
 }
 
-func New(repo repo) *service {
+type service struct {
+	repo   repo
+	dbRepo dbRepo
+}
+
+func New(repo repo, dbRepo dbRepo) *service {
 	return &service{
-		repo: repo,
+		repo:   repo,
+		dbRepo: dbRepo,
 	}
 }

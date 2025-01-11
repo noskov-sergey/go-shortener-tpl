@@ -115,3 +115,41 @@ func (c *MockserviceGetByIDCall) DoAndReturn(f func(string) (string, error)) *Mo
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
+
+// Ping mocks base method.
+func (m *Mockservice) Ping() error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Ping")
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Ping indicates an expected call of Ping.
+func (mr *MockserviceMockRecorder) Ping() *MockservicePingCall {
+	mr.mock.ctrl.T.Helper()
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Ping", reflect.TypeOf((*Mockservice)(nil).Ping))
+	return &MockservicePingCall{Call: call}
+}
+
+// MockservicePingCall wrap *gomock.Call
+type MockservicePingCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockservicePingCall) Return(arg0 error) *MockservicePingCall {
+	c.Call = c.Call.Return(arg0)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockservicePingCall) Do(f func() error) *MockservicePingCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockservicePingCall) DoAndReturn(f func() error) *MockservicePingCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
