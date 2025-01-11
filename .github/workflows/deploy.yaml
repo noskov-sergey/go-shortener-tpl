@@ -86,7 +86,7 @@ jobs:
             #Add value to env
             echo PATH=${{ secrets.PATH }} >> .env
             echo BASE_URL=${{ secrets.BASE_URL }} >> .env
-            echo FILE_STORAGE_PATH=${{ secrets.FILE_STORAGE_PATH }} >> .env
+            echo FILE_STORAGE_PATH=${{ secrets.FILE_STORAGE_PATH }}
             
             # Run a new container from a new image
             sudo docker compose up -d --build shortener
