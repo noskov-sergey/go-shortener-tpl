@@ -15,8 +15,8 @@ const (
 
 	envFileDefault = "./tmp/short-url-db.json"
 
-	repoFileValue   = "file"
-	repoMemoryValue = "memory"
+	repoFileValue = "file"
+	repoDBValue   = "db"
 )
 
 type config struct {
@@ -32,6 +32,7 @@ func New() *config {
 }
 
 func (c *config) Parse() *config {
+	c.Save = repoFileValue
 	c.File = envFileDefault
 	cfg := flag.String("c", ".env", "config file path")
 	flag.StringVar(&c.URL, "a", ":8080", "address and port to run server")
@@ -40,11 +41,16 @@ func (c *config) Parse() *config {
 	flag.Func("f", "base filepath to backup data", func(flagValue string) error {
 		if flagValue != "" {
 			c.File = flagValue
-			c.Save = repoFileValue
 		}
 		return nil
 	})
-	flag.StringVar(&c.DSN, "d", "", "database connection string")
+	flag.Func("d", "database connection string", func(flagValue string) error {
+		if flagValue != "" {
+			c.DSN = flagValue
+			c.Save = repoDBValue
+		}
+		return nil
+	})
 
 	flag.Parse()
 
@@ -64,6 +70,7 @@ func (c *config) Parse() *config {
 
 	if DSN := os.Getenv(envDSN); DSN != "" {
 		c.DSN = DSN
+		c.Save = repoDBValue
 	}
 
 	return c

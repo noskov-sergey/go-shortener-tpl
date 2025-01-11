@@ -3,35 +3,23 @@ package file
 import (
 	"encoding/json"
 	"fmt"
-	"math/rand"
+
+	"github.ru/noskov-sergey/go-shortener-tpl/internal/model"
 )
 
-const (
-	runeLen     = 52
-	shortURLLen = 8
-)
-
-func (r *repository) Create(URL string) (string, error) {
-	ru := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
-	str := make([]rune, shortURLLen)
-
-	for i := range shortURLLen {
-		str[i] = ru[rand.Intn(runeLen)]
-	}
-
-	r.data[string(str)] = URL
+func (r *repository) Create(shortener model.Shortener) error {
+	r.data[shortener.ShortURL] = shortener.URL
 	r.uuid++
 
 	if r.save {
-		if err := r.writeData(str, URL); err != nil {
-			return "", fmt.Errorf("error with write to file: %w", err)
+		if err := r.writeData(shortener.ShortURL, shortener.URL); err != nil {
+			return fmt.Errorf("error with write to file: %w", err)
 		}
 	}
-	return string(str), nil
+	return nil
 }
 
-func (r *repository) writeData(str []rune, URL string) error {
+func (r *repository) writeData(str string, URL string) error {
 	line := Shorten{
 		UUID:        r.uuid,
 		ShortURL:    string(str),

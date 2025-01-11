@@ -13,3 +13,8 @@ func ToResponse(result string) *ShortenResponse {
 		Result: result,
 	}
 }
+
+type Shortener struct {
+	URL      string
+	ShortURL string
+}
