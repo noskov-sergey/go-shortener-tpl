@@ -1,22 +1,19 @@
 package shortener
 
-type repo interface {
-	Create(string) (string, error)
-	GetByID(string) (string, error)
-}
+import "github.ru/noskov-sergey/go-shortener-tpl/internal/model"
 
-type dbRepo interface {
+type Repo interface {
+	Create(model.Shortener) error
+	GetByID(string) (string, error)
 	Ping() error
 }
 
 type service struct {
-	repo   repo
-	dbRepo dbRepo
+	repo Repo
 }
 
-func New(repo repo, dbRepo dbRepo) *service {
+func New(repo Repo) *service {
 	return &service{
-		repo:   repo,
-		dbRepo: dbRepo,
+		repo: repo,
 	}
 }

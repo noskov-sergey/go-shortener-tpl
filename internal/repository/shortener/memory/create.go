@@ -1,17 +1,9 @@
 package memory
 
-import "math/rand"
+import "github.ru/noskov-sergey/go-shortener-tpl/internal/model"
 
-func (r *repository) Create(URL string) (string, error) {
-	ru := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+func (r *repository) Create(data model.Shortener) error {
+	r.data[data.ShortURL] = data.URL
 
-	str := make([]rune, shortURLLen)
-
-	for i := range shortURLLen {
-		str[i] = ru[rand.Intn(runeLen)]
-	}
-
-	r.data[string(str)] = URL
-
-	return string(str), nil
+	return nil
 }

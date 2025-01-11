@@ -8,6 +8,7 @@ import (
 	"os"
 
 	_ "github.com/lib/pq"
+	"github.com/pressly/goose/v3"
 
 	shortenerApi "github.ru/noskov-sergey/go-shortener-tpl/internal/api/shortener"
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/config"
@@ -26,20 +27,37 @@ func main() {
 		panic(err)
 	}
 
-	db, err := sql.Open("postgres", cfg.DSN)
-	if err != nil {
-		log.Error("failed to connect to database:", slog.Any("err", err))
-		panic(err)
-	}
-	defer db.Close()
+	var rep shortener.Repo
 
-	rep, err := file.New(f, cfg.Save == "file")
-	if err != nil {
-		log.Error("error make repo", slog.Any("err", err))
-		panic(err)
+	switch cfg.Save {
+	case "file":
+		rep, err = file.New(f, cfg.Save == "file")
+		if err != nil {
+			log.Error("error make repo", slog.Any("err", err))
+			panic(err)
+		}
+	case "db":
+		db, err := sql.Open("postgres", cfg.DSN)
+		if err != nil {
+			log.Error("failed to connect to database:", slog.Any("err", err))
+			panic(err)
+		}
+		defer db.Close()
+
+		err = goose.SetDialect("postgres")
+		if err != nil {
+			log.Error("failed to set postgres dialect:", slog.Any("err", err))
+		}
+
+		err = goose.Up(db, "./migrations")
+		if err != nil {
+			log.Error("failed to up migrations:", err)
+		}
+
+		rep = pgsql.NewShortenRepository(db)
 	}
-	dbRep := pgsql.NewShortenRepository(db)
-	service := shortener.New(rep, dbRep)
+
+	service := shortener.New(rep)
 	imp := shortenerApi.New(service, cfg.BaseURL, log)
 
 	log.Info(fmt.Sprintf("starting server on %s", cfg.URL))
