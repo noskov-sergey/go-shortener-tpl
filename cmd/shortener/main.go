@@ -49,7 +49,7 @@ func main() {
 			log.Error("failed to set postgres dialect:", slog.Any("err", err))
 		}
 
-		err = goose.Up(db, "./migrations")
+		err = goose.Up(db, "migrations/")
 		if err != nil {
 			log.Error("failed to up migrations:", err)
 		}
