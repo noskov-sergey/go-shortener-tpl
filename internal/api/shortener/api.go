@@ -1,7 +1,6 @@
 package shortener
 
 import (
-	"database/sql"
 	"log/slog"
 
 	"github.com/go-chi/chi/v5"
@@ -17,24 +16,22 @@ type config struct {
 type service interface {
 	Create(string) (string, error)
 	GetByID(string) (string, error)
+	Ping() error
 }
 
 type Implementation struct {
 	service service
 	chi.Router
 
-	DB *sql.DB
-
 	log *slog.Logger
 
 	cfg config
 }
 
-func New(service service, baseURL string, DB *sql.DB, log *slog.Logger) *Implementation {
+func New(service service, baseURL string, log *slog.Logger) *Implementation {
 	i := &Implementation{
 		service: service,
 		Router:  chi.NewRouter(),
-		DB:      DB,
 		log:     log,
 		cfg: config{
 			baseURL: baseURL,
