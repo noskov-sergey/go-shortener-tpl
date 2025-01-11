@@ -1,10 +1,13 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
+
+	_ "github.com/lib/pq"
 
 	shortenerApi "github.ru/noskov-sergey/go-shortener-tpl/internal/api/shortener"
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/config"
@@ -22,13 +25,20 @@ func main() {
 		panic(err)
 	}
 
+	db, err := sql.Open("postgres", cfg.DSN)
+	if err != nil {
+		log.Error("failed to connect to database:", slog.Any("err", err))
+		panic(err)
+	}
+	defer db.Close()
+
 	rep, err := file.New(f, cfg.Save == "file")
 	if err != nil {
 		log.Error("error make repo", slog.Any("err", err))
 		panic(err)
 	}
 	service := shortener.New(rep)
-	imp := shortenerApi.New(service, cfg.BaseURL, log)
+	imp := shortenerApi.New(service, cfg.BaseURL, db, log)
 
 	log.Info(fmt.Sprintf("starting server on %s", cfg.URL))
 	err = http.ListenAndServe(cfg.URL, imp)

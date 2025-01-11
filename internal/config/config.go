@@ -11,6 +11,7 @@ const (
 	envServerAdress = "SERVER_ADDRESS"
 	envBaseURL      = "BASE_URL"
 	envFile         = "FILE_STORAGE_PATH"
+	envDSN          = "DATABASE_DSN"
 
 	envFileDefault = "./tmp/short-url-db.json"
 
@@ -23,6 +24,7 @@ type config struct {
 	BaseURL string
 	File    string
 	Save    string
+	DSN     string
 }
 
 func New() *config {
@@ -42,6 +44,7 @@ func (c *config) Parse() *config {
 		}
 		return nil
 	})
+	flag.StringVar(&c.DSN, "d", "", "database connection string")
 
 	flag.Parse()
 
@@ -57,6 +60,10 @@ func (c *config) Parse() *config {
 	if File := os.Getenv(envFile); File != "" {
 		c.File = File
 		c.Save = repoFileValue
+	}
+
+	if DSN := os.Getenv(envDSN); DSN != "" {
+		c.DSN = DSN
 	}
 
 	return c
