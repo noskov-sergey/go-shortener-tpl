@@ -12,6 +12,7 @@ RUN go build -o main ./cmd/shortener/main.go
 # Runtime stage
 FROM alpine:latest
 
+COPY migrations/ migrations/
 COPY --from=builder /app/main main
 
 ENTRYPOINT ["/main"]
