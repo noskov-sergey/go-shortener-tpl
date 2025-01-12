@@ -7,7 +7,7 @@ import (
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/model"
 )
 
-func (r *repository) Create(shortener model.Shortener) error {
+func (r *Repository) Create(shortener model.Shortener) error {
 	r.data[shortener.ShortURL] = shortener.URL
 	r.uuid++
 
@@ -19,7 +19,7 @@ func (r *repository) Create(shortener model.Shortener) error {
 	return nil
 }
 
-func (r *repository) writeData(str string, URL string) error {
+func (r *Repository) writeData(str string, URL string) error {
 	line := Shorten{
 		UUID:        r.uuid,
 		ShortURL:    string(str),

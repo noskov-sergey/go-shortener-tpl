@@ -1,5 +1,5 @@
 package file
 
-func (r *repository) Ping() error {
+func (r *Repository) Ping() error {
 	return nil
 }

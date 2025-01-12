@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func (r *repository) load() error {
+func (r *Repository) load() error {
 	for r.scanner.Scan() {
 		line := r.scanner.Bytes()
 		if len(line) == 0 {
