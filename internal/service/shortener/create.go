@@ -1,10 +1,12 @@
 package shortener
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/model"
+	"github.ru/noskov-sergey/go-shortener-tpl/internal/repository/shortener"
 )
 
 const (
@@ -19,8 +21,14 @@ func (s *service) Create(url string) (string, error) {
 	}
 
 	err := s.repo.Create(data)
-
 	if err != nil {
+		if errors.Is(err, shortener.ErrNotUnique) {
+			got, errGet := s.repo.GetByOriginal(data.URL)
+			if errGet != nil {
+				return "", errGet
+			}
+			return got, shortener.ErrNotUnique
+		}
 		return "", fmt.Errorf("create: %w", err)
 	}
 

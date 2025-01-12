@@ -6,7 +6,7 @@ import (
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/model"
 )
 
-func (r *repository) CreateBatchTx(data []model.Batch) error {
+func (r *Repository) CreateBatchTx(data []model.Batch) error {
 	for _, d := range data {
 		r.data[d.ShortURL] = d.OriginalURL
 		r.uuid++

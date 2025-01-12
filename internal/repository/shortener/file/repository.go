@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-type repository struct {
+type Repository struct {
 	save    bool
 	uuid    int8
 	data    map[string]string
@@ -15,11 +15,11 @@ type repository struct {
 	scanner *bufio.Scanner
 }
 
-func New(file *os.File, save bool) (*repository, error) {
+func New(file *os.File, save bool) (*Repository, error) {
 	writer := bufio.NewWriter(file)
 	scanner := bufio.NewScanner(file)
 
-	repo := &repository{
+	repo := &Repository{
 		save:    save,
 		data:    make(map[string]string),
 		file:    file,
