@@ -7,6 +7,7 @@ type Repo interface {
 	GetByID(string) (string, error)
 	Ping() error
 	CreateBatchTx([]model.Batch) error
+	GetByOriginal(string) (string, error)
 }
 
 type service struct {

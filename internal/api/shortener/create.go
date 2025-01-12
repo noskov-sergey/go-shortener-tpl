@@ -1,9 +1,12 @@
 package shortener
 
 import (
+	"errors"
 	"io"
 	"log/slog"
 	"net/http"
+
+	"github.ru/noskov-sergey/go-shortener-tpl/internal/repository/shortener"
 )
 
 func (i *Implementation) createHandler(res http.ResponseWriter, req *http.Request) {
@@ -22,6 +25,12 @@ func (i *Implementation) createHandler(res http.ResponseWriter, req *http.Reques
 	}
 
 	s, err := i.service.Create(string(body))
+	if errors.Is(err, shortener.ErrNotUnique) {
+		res.WriteHeader(http.StatusConflict)
+		res.Write([]byte(i.cfg.baseURL + "/" + s))
+		return
+	}
+
 	if err != nil {
 		log.Error("service create:", slog.Any("err", err))
 		res.WriteHeader(http.StatusBadRequest)
