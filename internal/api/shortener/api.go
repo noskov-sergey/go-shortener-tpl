@@ -51,7 +51,6 @@ func New(service service, baseURL string, log *slog.Logger) *Implementation {
 		i.Get("/ping", i.pingHandler)
 		i.Route("/api", func(r chi.Router) {
 			r.Route("/shorten", func(r chi.Router) {
-				r.Post("/", i.shortenHandler)
 				r.Post("/batch", i.createBatchHandler)
 			})
 		})
@@ -60,6 +59,7 @@ func New(service service, baseURL string, log *slog.Logger) *Implementation {
 		auth.Use(middleware.JwtAuthMiddleware("lol"))
 		auth.Post("/", i.createHandler)
 		auth.Get("/api/user/urls", i.getByUsernameHandler)
+		auth.Post("/api/shorten/", i.shortenHandler)
 	})
 
 	return i
