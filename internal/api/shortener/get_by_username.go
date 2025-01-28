@@ -20,7 +20,9 @@ func (i *Implementation) getByUsernameHandler(res http.ResponseWriter, req *http
 	}
 
 	if len(data) == 0 {
+		log.Error("no data:", slog.Any("error", err))
 		res.WriteHeader(http.StatusNoContent)
+		return
 	}
 
 	for x := range data {
