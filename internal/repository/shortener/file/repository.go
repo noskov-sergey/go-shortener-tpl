@@ -9,7 +9,7 @@ import (
 type Repository struct {
 	save    bool
 	uuid    int8
-	data    map[string]string
+	data    map[string][]string
 	file    *os.File
 	writer  *bufio.Writer
 	scanner *bufio.Scanner
@@ -21,7 +21,7 @@ func New(file *os.File, save bool) (*Repository, error) {
 
 	repo := &Repository{
 		save:    save,
-		data:    make(map[string]string),
+		data:    make(map[string][]string),
 		file:    file,
 		writer:  writer,
 		scanner: scanner,

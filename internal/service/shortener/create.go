@@ -14,11 +14,8 @@ const (
 	shortURLLen = 8
 )
 
-func (s *service) Create(url string) (string, error) {
-	data := model.Shortener{
-		ShortURL: generateShortURL(),
-		URL:      url,
-	}
+func (s *service) Create(data model.Shortener) (string, error) {
+	data.ShortURL = generateShortURL()
 
 	err := s.repo.Create(data)
 	if err != nil {

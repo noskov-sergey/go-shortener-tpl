@@ -40,7 +40,7 @@ func (m *Mockservice) EXPECT() *MockserviceMockRecorder {
 }
 
 // Create mocks base method.
-func (m *Mockservice) Create(arg0 string) (string, error) {
+func (m *Mockservice) Create(arg0 model.Shortener) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", arg0)
 	ret0, _ := ret[0].(string)
@@ -67,13 +67,13 @@ func (c *MockserviceCreateCall) Return(arg0 string, arg1 error) *MockserviceCrea
 }
 
 // Do rewrite *gomock.Call.Do
-func (c *MockserviceCreateCall) Do(f func(string) (string, error)) *MockserviceCreateCall {
+func (c *MockserviceCreateCall) Do(f func(model.Shortener) (string, error)) *MockserviceCreateCall {
 	c.Call = c.Call.Do(f)
 	return c
 }
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
-func (c *MockserviceCreateCall) DoAndReturn(f func(string) (string, error)) *MockserviceCreateCall {
+func (c *MockserviceCreateCall) DoAndReturn(f func(model.Shortener) (string, error)) *MockserviceCreateCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
@@ -152,6 +152,45 @@ func (c *MockserviceGetByIDCall) Do(f func(string) (string, error)) *Mockservice
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockserviceGetByIDCall) DoAndReturn(f func(string) (string, error)) *MockserviceGetByIDCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// GetByUsername mocks base method.
+func (m *Mockservice) GetByUsername(arg0 string) ([]model.Shortener, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByUsername", arg0)
+	ret0, _ := ret[0].([]model.Shortener)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByUsername indicates an expected call of GetByUsername.
+func (mr *MockserviceMockRecorder) GetByUsername(arg0 any) *MockserviceGetByUsernameCall {
+	mr.mock.ctrl.T.Helper()
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByUsername", reflect.TypeOf((*Mockservice)(nil).GetByUsername), arg0)
+	return &MockserviceGetByUsernameCall{Call: call}
+}
+
+// MockserviceGetByUsernameCall wrap *gomock.Call
+type MockserviceGetByUsernameCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockserviceGetByUsernameCall) Return(arg0 []model.Shortener, arg1 error) *MockserviceGetByUsernameCall {
+	c.Call = c.Call.Return(arg0, arg1)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockserviceGetByUsernameCall) Do(f func(string) ([]model.Shortener, error)) *MockserviceGetByUsernameCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockserviceGetByUsernameCall) DoAndReturn(f func(string) ([]model.Shortener, error)) *MockserviceGetByUsernameCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }

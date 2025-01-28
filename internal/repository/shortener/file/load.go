@@ -19,8 +19,15 @@ func (r *Repository) load() error {
 			return fmt.Errorf("json unmarshal error: %v", err)
 		}
 
+		var user string
+		if data.Username == nil {
+			user = ""
+		} else {
+			user = *data.Username
+		}
+
 		r.uuid++
-		r.data[data.ShortURL] = data.OriginalURL
+		r.data[data.ShortURL] = []string{data.OriginalURL, user}
 	}
 
 	return nil

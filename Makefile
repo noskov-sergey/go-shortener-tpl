@@ -30,5 +30,9 @@ tests10:
 	GOARCH=amd64 GOOS=windows go build -o cmd/shortener/shortener.exe cmd/shortener/main.go
 	shortenertestbeta --test.v --test.run=^TestIteration10 -binary-path=shortener -source-path=. -database-dsn=postgres://shortener:shortener@localhost:5439/shortener?sslmode=disable
 
+tests14:
+	GOARCH=amd64 GOOS=windows go build -o cmd/shortener/shortener.exe cmd/shortener/main.go
+	shortenertestbeta --test.v --test.run=^TestIteration14 -binary-path=shortener -database-dsn=postgres://shortener:shortener@localhost:5439/shortener?sslmode=disable
+
 build:
 	GOARCH=amd64 GOOS=windows go build -o cmd/shortener/shortener.exe cmd/shortener/main.go

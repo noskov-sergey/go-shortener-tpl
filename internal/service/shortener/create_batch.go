@@ -17,6 +17,7 @@ func (s *service) CreateBatch(data []model.Batch) ([]model.Batch, error) {
 			CorrelationID: d.CorrelationID,
 			ShortURL:      generateShortURL(),
 			OriginalURL:   d.OriginalURL,
+			Username:      d.Username,
 		}
 
 		goodData = append(goodData, good)

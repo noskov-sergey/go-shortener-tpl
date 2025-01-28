@@ -12,6 +12,7 @@ import (
 	"go.uber.org/mock/gomock"
 
 	mock_shortener "github.ru/noskov-sergey/go-shortener-tpl/internal/api/shortener/mocks"
+	"github.ru/noskov-sergey/go-shortener-tpl/internal/model"
 )
 
 func TestImplementation_Create_Success(t *testing.T) {
@@ -44,7 +45,7 @@ func TestImplementation_Create_Success(t *testing.T) {
 			w := httptest.NewRecorder()
 
 			api.EXPECT().
-				Create("http://shortener.com").
+				Create(model.Shortener{URL: "http://shortener.com", Username: ""}).
 				Return("AAAbbbCC", nil)
 
 			td.createHandler(w, r)
