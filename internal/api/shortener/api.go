@@ -9,16 +9,21 @@ import (
 	"github.ru/noskov-sergey/go-shortener-tpl/internal/model"
 )
 
+const (
+	AuthLogin = "X-User-Agent"
+)
+
 type config struct {
 	baseURL string
 }
 
 //go:generate mockgen -source api.go -destination mocks/mocks.go -typed true service
 type service interface {
-	Create(string) (string, error)
+	Create(model.Shortener) (string, error)
 	GetByID(string) (string, error)
 	Ping() error
 	CreateBatch([]model.Batch) ([]model.Batch, error)
+	GetByUsername(string) ([]model.Shortener, error)
 }
 
 type Implementation struct {
@@ -42,7 +47,6 @@ func New(service service, baseURL string, log *slog.Logger) *Implementation {
 	i.Use(middleware.WithLogging)
 	i.Use(middleware.GzipMiddleware)
 	i.Route("/", func(r chi.Router) {
-		i.Post("/", i.createHandler)
 		i.Get("/{id}", i.getByIDHandler)
 		i.Get("/ping", i.pingHandler)
 		i.Route("/api", func(r chi.Router) {
@@ -52,8 +56,11 @@ func New(service service, baseURL string, log *slog.Logger) *Implementation {
 			})
 		})
 	})
-	i.Post("/", i.createHandler)
-	i.Get("/{id}", i.getByIDHandler)
+	i.Group(func(auth chi.Router) {
+		auth.Use(middleware.JwtAuthMiddleware("lol"))
+		auth.Post("/", i.createHandler)
+		auth.Get("/api/user/urls", i.getByUsernameHandler)
+	})
 
 	return i
 }

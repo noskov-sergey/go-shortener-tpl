@@ -18,13 +18,21 @@ func (i *Implementation) shortenHandler(res http.ResponseWriter, req *http.Reque
 	}
 	defer req.Body.Close()
 
-	var data model.ShortenRequest
-	err = json.Unmarshal(body, &data)
+	var d model.ShortenRequest
+	err = json.Unmarshal(body, &d)
 	if err != nil {
 		res.WriteHeader(http.StatusBadRequest)
 	}
 
-	s, err := i.service.Create(data.URL)
+	user := req.Header.Get(AuthLogin)
+	user = "lol"
+
+	data := model.Shortener{
+		URL:      d.URL,
+		Username: user,
+	}
+
+	s, err := i.service.Create(data)
 	if errors.Is(err, shortener.ErrNotUnique) {
 		res.Header().Set("Content-Type", "application/json")
 		res.WriteHeader(http.StatusConflict)
