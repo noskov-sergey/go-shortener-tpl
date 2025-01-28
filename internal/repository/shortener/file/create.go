@@ -8,22 +8,23 @@ import (
 )
 
 func (r *Repository) Create(shortener model.Shortener) error {
-	r.data[shortener.ShortURL] = shortener.URL
+	r.data[shortener.ShortURL] = []string{shortener.URL, shortener.Username}
 	r.uuid++
 
 	if r.save {
-		if err := r.writeData(shortener.ShortURL, shortener.URL); err != nil {
+		if err := r.writeData(shortener.ShortURL, shortener.URL, shortener.Username); err != nil {
 			return fmt.Errorf("error with write to file: %w", err)
 		}
 	}
 	return nil
 }
 
-func (r *Repository) writeData(str string, URL string) error {
+func (r *Repository) writeData(str string, URL string, username string) error {
 	line := Shorten{
 		UUID:        r.uuid,
-		ShortURL:    string(str),
+		ShortURL:    str,
 		OriginalURL: URL,
+		Username:    &username,
 	}
 
 	data, err := json.Marshal(&line)

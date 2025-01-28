@@ -8,6 +8,7 @@ type Repo interface {
 	Ping() error
 	CreateBatchTx([]model.Batch) error
 	GetByOriginal(string) (string, error)
+	GetByUsername(string) ([]model.Shortener, error)
 }
 
 type service struct {

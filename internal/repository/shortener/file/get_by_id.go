@@ -6,5 +6,5 @@ func (r *Repository) GetByID(shortURL string) (string, error) {
 	if _, ok := r.data[shortURL]; !ok {
 		return "", errors.ErrShortURLNotFound
 	}
-	return r.data[shortURL], nil
+	return r.data[shortURL][0], nil
 }

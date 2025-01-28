@@ -15,9 +15,9 @@ func (r *Repository) CreateBatchTx(data []model.Batch) error {
 
 	for _, d := range data {
 		_, err = tx.Exec(`
-		INSERT INTO shortener (original_url,short_url,created_at)
-		VALUES ($1, $2, $3) RETURNING id`,
-			d.OriginalURL, d.ShortURL, time.Now())
+		INSERT INTO shortener (original_url,short_url,created_at, username)
+		VALUES ($1, $2, $3, $4) RETURNING id`,
+			d.OriginalURL, d.ShortURL, time.Now(), d.Username)
 		if err != nil {
 			tx.Rollback()
 			return fmt.Errorf("failed exec tx: %w", err)
