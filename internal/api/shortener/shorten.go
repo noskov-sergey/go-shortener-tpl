@@ -25,7 +25,6 @@ func (i *Implementation) shortenHandler(res http.ResponseWriter, req *http.Reque
 	}
 
 	user := req.Header.Get(AuthLogin)
-	user = "lol"
 
 	data := model.Shortener{
 		URL:      d.URL,

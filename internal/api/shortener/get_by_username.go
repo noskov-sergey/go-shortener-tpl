@@ -19,6 +19,10 @@ func (i *Implementation) getByUsernameHandler(res http.ResponseWriter, req *http
 		return
 	}
 
+	if len(data) == 0 {
+		res.WriteHeader(http.StatusNoContent)
+	}
+
 	for x := range data {
 		data[x].ShortURL = i.cfg.baseURL + "/" + data[x].ShortURL
 	}

@@ -19,6 +19,11 @@ func (r *Repository) GetByUsername(username string) ([]model.Shortener, error) {
 		return nil, fmt.Errorf("query: %w", err)
 	}
 
+	err = rows.Err()
+	if err != nil {
+		return nil, fmt.Errorf("rows: %w", err)
+	}
+
 	for rows.Next() {
 		var d Shortener
 		err = rows.Scan(&d.ID, &d.OriginalURL, &d.ShortURL, &d.CreatedAt, &d.Username)
