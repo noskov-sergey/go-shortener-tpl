@@ -35,6 +35,6 @@ func (i *Implementation) getByUsernameHandler(res http.ResponseWriter, req *http
 	}
 
 	res.Header().Set("Content-Type", "application/json")
-	res.WriteHeader(http.StatusCreated)
+	res.WriteHeader(http.StatusOK)
 	res.Write(r)
 }
