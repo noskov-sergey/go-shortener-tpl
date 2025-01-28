@@ -59,7 +59,7 @@ func New(service service, baseURL string, log *slog.Logger) *Implementation {
 		auth.Use(middleware.JwtAuthMiddleware("lol"))
 		auth.Post("/", i.createHandler)
 		auth.Get("/api/user/urls", i.getByUsernameHandler)
-		auth.Post("/api/shorten/", i.shortenHandler)
+		auth.Post("/api/shorten", i.shortenHandler)
 	})
 
 	return i
