@@ -22,9 +22,16 @@ func JwtAuthMiddleware(secret string) func(next http.Handler) http.Handler {
 
 			c, err := r.Cookie(AuthName)
 			if err != nil {
-				writeNewCookie(w, r, next, secret)
-				log.Debug("new cookie", slog.Any("error", err))
-				return
+				if r.Method == http.MethodGet {
+					log.Error("is unauthorized", slog.Any("error", err))
+					w.WriteHeader(http.StatusUnauthorized)
+					next.ServeHTTP(w, r)
+					return
+				} else {
+					writeNewCookie(w, r, next, secret)
+					log.Debug("new cookie", slog.Any("error", err))
+					return
+				}
 			}
 
 			t := c.Value
