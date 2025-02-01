@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
@@ -21,9 +22,13 @@ func main() {
 	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	cfg := config.New().Parse()
 
-	f, err := os.OpenFile(cfg.File, os.O_RDWR|os.O_CREATE, 0666)
+	if err := os.MkdirAll(filepath.Dir(cfg.File), 0770); err != nil {
+		log.Error("error mkdir", slog.Any("err", err))
+		panic(err)
+	}
+	f, err := os.Create(cfg.File)
 	if err != nil {
-		log.Error("error open file", slog.Any("err", err))
+		log.Error("error create file", slog.Any("err", err))
 		panic(err)
 	}
 

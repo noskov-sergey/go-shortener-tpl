@@ -1,6 +1,8 @@
 package shortener
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func (s *service) GetByID(shortURL string) (string, error) {
 	str, err := s.repo.GetByID(shortURL)
@@ -8,5 +10,5 @@ func (s *service) GetByID(shortURL string) (string, error) {
 		return "", fmt.Errorf("get by id: %w", err)
 	}
 
-	return str, nil
+	return str.URL, nil
 }

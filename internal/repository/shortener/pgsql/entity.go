@@ -8,4 +8,5 @@ type Shortener struct {
 	ShortURL    string    `db:"short_url"`
 	CreatedAt   time.Time `db:"created_at"`
 	Username    *string   `db:"username"`
+	Deleted     bool      `db:"deleted"`
 }

@@ -1,6 +1,7 @@
 package shortener
 
 import (
+	"context"
 	"log/slog"
 
 	"github.com/go-chi/chi/v5"
@@ -24,6 +25,7 @@ type service interface {
 	Ping() error
 	CreateBatch([]model.Batch) ([]model.Batch, error)
 	GetByUsername(string) ([]model.Shortener, error)
+	Delete(context.Context, string, []string) error
 }
 
 type Implementation struct {
@@ -60,6 +62,7 @@ func New(service service, baseURL string, log *slog.Logger) *Implementation {
 		auth.Post("/", i.createHandler)
 		auth.Get("/api/user/urls", i.getByUsernameHandler)
 		auth.Post("/api/shorten", i.shortenHandler)
+		auth.Delete("/api/user/urls", i.deleteHandler)
 	})
 
 	return i
