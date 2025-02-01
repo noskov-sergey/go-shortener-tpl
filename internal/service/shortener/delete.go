@@ -71,8 +71,8 @@ func (s *service) check(ctx context.Context, inputCh chan request) chan request 
 			}
 
 			if shortener.Username != data.username {
-				errOwner := errors.New(fmt.Sprintf("%s your are not owner of url %s", data.username, data.shortURL))
-				data.err = &errOwner
+				e := fmt.Errorf("%s your are not owner of url %s", data.username, data.shortURL)
+				data.err = &e
 			}
 
 			select {
