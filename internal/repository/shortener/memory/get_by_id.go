@@ -1,12 +1,19 @@
 package memory
 
 import (
+	"github.ru/noskov-sergey/go-shortener-tpl/internal/model"
 	errors "github.ru/noskov-sergey/go-shortener-tpl/internal/repository/shortener"
 )
 
-func (r *repository) GetByID(shortURL string) (string, error) {
+func (r *repository) GetByID(shortURL string) (*model.Shortener, error) {
 	if _, ok := r.data[shortURL]; !ok {
-		return "", errors.ErrShortURLNotFound
+		return nil, errors.ErrShortURLNotFound
 	}
-	return r.data[shortURL], nil
+
+	res := &model.Shortener{
+		URL:      r.data[shortURL],
+		ShortURL: shortURL,
+	}
+
+	return res, nil
 }

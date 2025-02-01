@@ -10,6 +10,7 @@
 package mock_shortener
 
 import (
+	context "context"
 	reflect "reflect"
 
 	model "github.ru/noskov-sergey/go-shortener-tpl/internal/model"
@@ -113,6 +114,44 @@ func (c *MockserviceCreateBatchCall) Do(f func([]model.Batch) ([]model.Batch, er
 
 // DoAndReturn rewrite *gomock.Call.DoAndReturn
 func (c *MockserviceCreateBatchCall) DoAndReturn(f func([]model.Batch) ([]model.Batch, error)) *MockserviceCreateBatchCall {
+	c.Call = c.Call.DoAndReturn(f)
+	return c
+}
+
+// Delete mocks base method.
+func (m *Mockservice) Delete(arg0 context.Context, arg1 string, arg2 []string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delete", arg0, arg1, arg2)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockserviceMockRecorder) Delete(arg0, arg1, arg2 any) *MockserviceDeleteCall {
+	mr.mock.ctrl.T.Helper()
+	call := mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*Mockservice)(nil).Delete), arg0, arg1, arg2)
+	return &MockserviceDeleteCall{Call: call}
+}
+
+// MockserviceDeleteCall wrap *gomock.Call
+type MockserviceDeleteCall struct {
+	*gomock.Call
+}
+
+// Return rewrite *gomock.Call.Return
+func (c *MockserviceDeleteCall) Return(arg0 error) *MockserviceDeleteCall {
+	c.Call = c.Call.Return(arg0)
+	return c
+}
+
+// Do rewrite *gomock.Call.Do
+func (c *MockserviceDeleteCall) Do(f func(context.Context, string, []string) error) *MockserviceDeleteCall {
+	c.Call = c.Call.Do(f)
+	return c
+}
+
+// DoAndReturn rewrite *gomock.Call.DoAndReturn
+func (c *MockserviceDeleteCall) DoAndReturn(f func(context.Context, string, []string) error) *MockserviceDeleteCall {
 	c.Call = c.Call.DoAndReturn(f)
 	return c
 }
