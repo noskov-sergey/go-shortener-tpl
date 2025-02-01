@@ -1,6 +1,8 @@
 package shortener
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func (s *service) GetByID(shortURL string) (string, error) {
 	str, err := s.repo.GetByID(shortURL)

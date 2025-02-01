@@ -9,4 +9,5 @@ import (
 var (
 	ErrShortURLNotFound = errors.New("can't found by short url")
 	ErrNotUnique        = errors.New(pgerrcode.UniqueViolation)
+	ErrDeleted          = errors.New("is deleted")
 )
